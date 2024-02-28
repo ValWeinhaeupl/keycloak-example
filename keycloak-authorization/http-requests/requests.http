@@ -1,0 +1,59 @@
+### get access token
+
+POST https://auth.htl-leonding.ac.at/realms/htl-leonding/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+  client_id = htlleonding-service &
+  client_secret = AkIRaaboJ23Q64jSjtN9gkmfMumUybD8 &
+  grant_type = password &
+  username = it190206 &
+  password = *pwd* &
+  scope = openid
+
+> {%
+    client.global.set("auth_token", response.body.access_token);
+    client.log("Bearer: " + client.global.get("auth_token"));
+  %}
+
+###
+
+POST https://auth.htl-leonding.ac.at/realms/2324-5bhitm/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id = backend &
+client_secret = 6X1mqnbfwMpgwFqaOe5pDoYssPRzNAy8 &
+grant_type = password &
+username = it... &
+password = pwd... &
+scope = openid
+
+> {%
+    client.global.set("auth_token", response.body.access_token);
+    client.log("Bearer: " + client.global.get("auth_token"));
+%}
+
+###
+
+GET https://auth.htl-leonding.ac.at/realms/htl-leonding/protocol/openid-connect/certs
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+###
+
+GET https://auth.htl-leonding.ac.at/realms/htl-leonding/protocol/openid-connect/userinfo
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+###
+
+GET http://localhost:8080/api/student/me
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+###
+
+GET http://localhost:8080/api/teachers
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+###
